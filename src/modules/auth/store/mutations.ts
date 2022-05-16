@@ -16,9 +16,14 @@ const mutation: MutationTree<AuthStateInterface> = {
         state.status = 'authenticated'
     },
 
+    authUser(state: AuthStateInterface, { use_id, use_name, use_lastname }) {
+        state.user = use_name + ' ' + use_lastname
+    },
+
     logOut(state: AuthStateInterface) {
         state.access_token = ''
         state.refresh_token = ''
+        state.user = ''
         state.status = 'not-authenticated'
 
         localStorage.removeItem('access_token')

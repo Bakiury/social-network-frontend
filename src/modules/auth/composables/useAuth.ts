@@ -22,11 +22,18 @@ const useAuth = () => {
         return resp;
     }
 
+    const authUser = async () => {
+        const resp = await store.dispatch('auth/authUser');
+
+        return resp;
+    }
+
     const logOut = () => {
         store.commit('auth/logOut');
     }
 
     return {
+        authUser,
         refreshToken,
         createUser,
         loginUser,
