@@ -5,7 +5,7 @@
                 <div class="user-img">
                     <img src="@/assets/user.png" />
                 </div>
-                <form class="" autocomplete="off">
+                <form @submit.prevent="onSubmit" autocomplete="off">
                     <div class="form-group" id="user-group">
                         <div>
                             <i class="fas fa-user"></i>
@@ -16,7 +16,7 @@
                             class="form-control"
                             placeholder="Email"
                             name="username"
-                            ref="myUser"
+                            v-model="userForm.use_email"
                         />
                     </div>
                     <div class="form-group">
@@ -29,6 +29,7 @@
                             class="form-control"
                             placeholder="Contraseña"
                             name="password"
+                            v-model="userForm.use_password"
                         />
                     </div>
                     <button type="submit" class="btn">
@@ -36,7 +37,9 @@
                     </button>
                 </form>
                 <div class="col-12 forgot">
-                    <router-link :to="{ name: 'register' }" class="nav-link active"
+                    <router-link
+                        :to="{ name: 'register' }"
+                        class="nav-link active"
                         >No tienes una cuenta registrate aqui</router-link
                     >
                 </div>
@@ -46,9 +49,34 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import Swal from 'sweetalert2'
+import useAuth from '../composables/useAuth'
+
 export default defineComponent({
     name: 'Login',
+    setup() {
+        const router = useRouter()
+        const { loginUser } = useAuth()
+
+        const userForm = ref({
+            use_email: '',
+            use_password: '',
+        })
+
+        return {
+            userForm,
+
+            onSubmit: async () => {
+                const { ok, message } = await loginUser(userForm.value)
+                if (message) console.log(message.response.data)
+
+                if (!ok) Swal.fire('Oops', 'Credenciales incorrectas', 'error')
+                else router.push({ name: 'feed' })
+            },
+        }
+    },
 })
 </script>
 

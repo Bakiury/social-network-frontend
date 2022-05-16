@@ -14,7 +14,7 @@
                         Ingresa la siguiente información para registrarte.
                     </p>
 
-                    <form>
+                    <form @submit.prevent="onSubmit" autocomplete="off">
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group mb-3">
@@ -26,6 +26,7 @@
                                         type="text"
                                         class="form-control"
                                         placeholder="Ingrese su nombre"
+                                        v-model="userForm.use_name"
                                     />
                                 </div>
 
@@ -38,6 +39,7 @@
                                         type="text"
                                         class="form-control"
                                         placeholder="Ingrese su apellido"
+                                        v-model="userForm.use_lastname"
                                     />
                                 </div>
 
@@ -50,6 +52,7 @@
                                         type="email"
                                         class="form-control"
                                         placeholder="Ingrese su email"
+                                        v-model="userForm.use_email"
                                     />
                                 </div>
 
@@ -62,6 +65,7 @@
                                         type="password"
                                         class="form-control"
                                         placeholder="Ingrese su contraseña"
+                                        v-model="userForm.use_password"
                                     />
                                 </div>
                             </div>
@@ -76,6 +80,7 @@
                                         type="text"
                                         class="form-control"
                                         placeholder="Ingrese su foto de perfil"
+                                        v-model="userForm.use_image"
                                     />
                                 </div>
 
@@ -85,22 +90,23 @@
                                         <span class="text-danger">*</span>
                                     </label>
                                     <input
-                                        type="date"
+                                        type="datetime-local"
                                         class="form-control"
                                         placeholder="Ingrese su fecha de nacimiento"
+                                        v-model="userForm.use_birthday"
                                     />
                                 </div>
 
                                 <div class="form-group mb-3">
                                     <label class="font-weight-bold">
                                         Descripción
-                                        <span class="text-danger">*</span>
                                     </label>
                                     <textarea
                                         cols="30"
                                         rows="4"
                                         class="form-control mt-2"
                                         placeholder="Ingrese su descripción"
+                                        v-model="userForm.use_description"
                                     ></textarea>
                                 </div>
                             </div>
@@ -147,9 +153,39 @@
     </section>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import Swal from 'sweetalert2'
+import useAuth from '../composables/useAuth'
+
 export default defineComponent({
     name: 'Register',
+    setup() {
+        const router = useRouter()
+        const { createUser } = useAuth()
+
+        const userForm = ref({
+            use_name: '',
+            use_lastname: '',
+            use_email: '',
+            use_password: '',
+            use_image: '',
+            use_birthday: '',
+            use_description: '',
+        })
+
+        return {
+            userForm,
+
+            onSubmit: async () => {
+                const { ok, message } = await createUser(userForm.value)
+                if (message) console.log(message.response.data)
+
+                if (!ok) Swal.fire('Oops', 'Faltan datos', 'error')
+                else router.push({ name: 'feed' })
+            },
+        }
+    },
 })
 </script>
 <style scoped>
