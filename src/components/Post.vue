@@ -2,7 +2,9 @@
     <div class="card">
         <div class="cardHeader" title="Ver perfil de este usuario">
             <img src="@/assets/user.png" alt="Imagen del usuario" />
-            <h3>username</h3>
+            <h3>
+                {{ postData.user.use_name }} {{ postData.user.use_lastname }}
+            </h3>
             <span class="myMsgVisit"></span>
         </div>
         <img
@@ -12,9 +14,9 @@
         />
         <div class="card-body">
             <h4 class="card-title">
-                <u>post tilte</u>
+                <u>{{ postData.pos_title }}</u>
             </h4>
-            <p class="card-text">post description</p>
+            <p class="card-text">{{ postData.pos_description }}</p>
             <hr />
             <div class="d-flex justify-content-center">
                 <a class="btn btn-dark">Aceptar</a>
@@ -27,9 +29,15 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-    name: 'Comment',
+    name: 'Post',
+    props: {
+        postData: {
+            type: Object,
+            required: true,
+        },
+    },
     setup() {
-        //
+        return {}
     },
 })
 </script>

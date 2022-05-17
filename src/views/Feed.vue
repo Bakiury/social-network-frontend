@@ -18,8 +18,8 @@
         ></i>
 
         <section class="myContent">
-            <div>
-                <Comment />
+            <div v-for="post in getAllPost" :key="post.pos_id">
+                <Post :postData="post" />
             </div>
         </section>
 
@@ -99,23 +99,29 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import useAuth from '@/modules/auth/composables/useAuth'
+import usePost from '@/modules/post/composables/usePost'
 import Navbar from '@/components/Navbar.vue'
-import Comment from '@/components/Comment.vue'
+import Post from '@/components/Post.vue'
 
 export default defineComponent({
     name: 'Feed',
     components: {
         Navbar,
-        Comment,
+        Post,
     },
     setup() {
         const { authUser, userName } = useAuth()
+        const { allPost, getAllPost } = usePost()
 
-        authUser()
+        const currentUser = authUser() // Fill state with the user info
+        const getAllPosts = allPost() // Fill state with the posts info
 
         return {
             authUser,
             userName,
+
+            allPost,
+            getAllPost,
         }
     },
 })
