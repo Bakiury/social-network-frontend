@@ -40,7 +40,7 @@ const useAuth = () => {
         logOut,
 
         authStatus: computed(() => store.getters['auth/currentState']),
-        userName: computed(() => store.getters['auth/userName']),
+        getCurrentUser: computed(() => store.getters['auth/getCurrentUser']),
     };
 };
 

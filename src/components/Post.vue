@@ -1,7 +1,12 @@
 <template>
     <div class="card">
         <div class="cardHeader" title="Ver perfil de este usuario">
-            <img src="@/assets/user.png" alt="Imagen del usuario" />
+            <img
+                v-if="postData.user.use_image !== '...'"
+                :src="postData.user.use_image"
+                alt="Imagen del usuario"
+            />
+            <img v-else src="@/assets/user.png" alt="Imagen del usuario" />
             <h3>
                 {{ postData.user.use_name }} {{ postData.user.use_lastname }}
             </h3>
@@ -52,6 +57,7 @@ export default defineComponent({
 }
 .cardHeader img {
     width: 50px;
+    border-radius: 50%;
 }
 .cardHeader h3 {
     display: flex;

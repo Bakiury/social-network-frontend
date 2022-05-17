@@ -7,7 +7,7 @@ const getters: GetterTree<AuthStateInterface, StateInterface> = {
         return state.status
     },
 
-    userName(state) {
+    getCurrentUser(state) {
         return state.user || ''
     }
 }

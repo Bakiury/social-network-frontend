@@ -1,10 +1,13 @@
 <template>
-    <Navbar />
+    <Navbar :userImage="getCurrentUser.use_image" />
     <section id="myFeed">
         <h2>
             <span>
                 <u>Bienvenid@</u>
-                <p>{{ userName }}</p>
+                <p>
+                    {{ getCurrentUser.use_name }}
+                    {{ getCurrentUser.use_lastname }}
+                </p>
             </span>
         </h2>
 
@@ -110,7 +113,7 @@ export default defineComponent({
         Post,
     },
     setup() {
-        const { authUser, userName } = useAuth()
+        const { authUser, getCurrentUser } = useAuth()
         const { allPost, getAllPost } = usePost()
 
         const currentUser = authUser() // Fill state with the user info
@@ -118,7 +121,7 @@ export default defineComponent({
 
         return {
             authUser,
-            userName,
+            getCurrentUser,
 
             allPost,
             getAllPost,

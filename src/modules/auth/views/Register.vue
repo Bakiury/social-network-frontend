@@ -2,7 +2,12 @@
     <section class="contact-box">
         <div class="myRegister">
             <div class="myBox text-center">
-                <img src="@/assets/user.png" alt="logo" />
+                <img
+                    v-if="localImage"
+                    :src="localImage"
+                    alt="Foto del usuario"
+                />
+                <img v-else src="@/assets/user.png" alt="logo" />
             </div>
 
             <div>
@@ -77,11 +82,22 @@
                                         <span class="text-danger">*</span>
                                     </label>
                                     <input
-                                        type="text"
-                                        class="form-control"
-                                        placeholder="Ingrese su foto de perfil"
-                                        v-model="userForm.use_image"
+                                        type="file"
+                                        @change="onSelectedImage"
+                                        ref="imageSelector"
+                                        v-show="false"
+                                        accept="image/png, image/jpeg, image/jpg"
                                     />
+                                    <br />
+                                    <button
+                                        class="btn btn-primary w-100"
+                                        type="button"
+                                        @click="onSelectImage"
+                                    >
+                                        Subir foto &nbsp;<i
+                                            class="fa fa-upload"
+                                        ></i>
+                                    </button>
                                 </div>
 
                                 <div class="form-group mb-3">
@@ -130,7 +146,7 @@
                             </div>
 
                             <div class="d-flex">
-                                <button class="btn btn-primary">
+                                <button class="btn btn-secondary">
                                     <router-link
                                         :to="{ name: 'login' }"
                                         class="nav-link text-white"
@@ -157,12 +173,33 @@ import { defineComponent, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import Swal from 'sweetalert2'
 import useAuth from '../composables/useAuth'
+import uploadImage from '../helpers/uploadImage'
 
 export default defineComponent({
     name: 'Register',
     setup() {
         const router = useRouter()
         const { createUser } = useAuth()
+        const localImage = ref()
+        const file = ref()
+        const imageSelector = ref()
+
+        const onSelectedImage = (event: any) => {
+            file.value = event.target.files[0]
+            if (!file.value) {
+                localImage.value = null
+                file.value = null
+                return
+            }
+
+            const fr = new FileReader()
+            fr.onload = () => (localImage.value = fr.result)
+            fr.readAsDataURL(file.value)
+        }
+
+        const onSelectImage = () => {
+            imageSelector.value.click()
+        }
 
         const userForm = ref({
             use_name: '',
@@ -176,8 +213,16 @@ export default defineComponent({
 
         return {
             userForm,
+            localImage,
+            file,
+            imageSelector,
+            onSelectedImage,
+            onSelectImage,
 
             onSubmit: async () => {
+                userForm.value.use_image = await uploadImage(file.value) // To upload the image in cloudinary
+                if (!userForm.value.use_image) userForm.value.use_image = '...'
+
                 const { ok, message } = await createUser(userForm.value)
                 if (message) console.log(message.response.data)
 

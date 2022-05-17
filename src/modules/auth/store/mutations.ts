@@ -16,8 +16,13 @@ const mutation: MutationTree<AuthStateInterface> = {
         state.status = 'authenticated'
     },
 
-    authUser(state: AuthStateInterface, { use_id, use_name, use_lastname }) {
-        state.user = use_name + ' ' + use_lastname
+    authUser(state: AuthStateInterface, { use_id, use_name, use_lastname, use_image }) {
+        state.user = {
+            use_id,
+            use_name,
+            use_lastname,
+            use_image
+        }
     },
 
     logOut(state: AuthStateInterface) {

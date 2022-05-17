@@ -92,9 +92,9 @@ const actions: ActionTree<AuthStateInterface, StateInterface> = {
                     ) }`,
                 },
             })
-            const { use_id, use_name, use_lastname } = data
+            const { use_id, use_name, use_lastname, use_image } = data
 
-            commit('authUser', { use_id, use_name, use_lastname })
+            commit('authUser', { use_id, use_name, use_lastname, use_image })
 
             return { ok: true }
         } catch (error) {

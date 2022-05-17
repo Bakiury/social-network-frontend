@@ -1,8 +1,11 @@
 <template>
     <div id="nav">
         <div class="sectionLogo">
-            <div class="myLogo">
-                <img src="@/assets/user.png" alt="Logo" />
+            <div v-if="userImage !== '...'" class="myLogo">
+                <img :src="userImage" alt="Foto del usuario" />
+            </div>
+            <div v-else class="myLogo">
+                <img src="@/assets/user.png" alt="Foto del usuario" />
             </div>
             <h1>Red Social</h1>
         </div>
@@ -32,6 +35,12 @@ import Swal from 'sweetalert2'
 
 export default defineComponent({
     name: 'Navbar',
+    props: {
+        userImage: {
+            type: String,
+            required: true,
+        },
+    },
     setup() {
         const { logOut } = useAuth()
         const router = useRouter()
