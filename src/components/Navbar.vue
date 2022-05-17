@@ -26,15 +26,32 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { useRouter } from 'vue-router'
+import useAuth from '@/modules/auth/composables/useAuth'
+import Swal from 'sweetalert2'
 
 export default defineComponent({
     name: 'Navbar',
     setup() {
-        //
+        const { logOut } = useAuth()
+        const router = useRouter()
 
         return {
             logOutUser: () => {
-                //
+                Swal.fire({
+                    title: '¿Realmente quieres cerrar sesión?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sí',
+                    cancelButtonText: 'No',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        logOut()
+                        router.push({ name: 'login' })
+                    }
+                })
             },
         }
     },
