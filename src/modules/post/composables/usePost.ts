@@ -10,8 +10,15 @@ const usePost = () => {
         return resp;
     }
 
+    const createPost = async (post: any) => {
+        const resp = await store.dispatch('post/createPost', post);
+
+        return resp;
+    }
+
     return {
         allPost,
+        createPost,
 
         getAllPost: computed(() => store.getters['post/getPosts']),
     }

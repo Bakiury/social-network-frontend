@@ -173,7 +173,7 @@ import { defineComponent, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import Swal from 'sweetalert2'
 import useAuth from '../composables/useAuth'
-import uploadImage from '../helpers/uploadImage'
+import uploadImage from '@/helpers/uploadImage'
 
 export default defineComponent({
     name: 'Register',

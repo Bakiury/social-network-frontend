@@ -1,5 +1,5 @@
 <template>
-    <div class="card">
+    <div v-if="postData.user" class="card">
         <div class="cardHeader" title="Ver perfil de este usuario">
             <img
                 v-if="postData.user.use_image !== '...'"
@@ -10,9 +10,19 @@
             <h3>
                 {{ postData.user.use_name }} {{ postData.user.use_lastname }}
             </h3>
-            <span class="myMsgVisit"></span>
+            <span class="postDate"
+                >{{ day }} de {{ month }} a las {{ time }}</span
+            >
+            <!-- <span class="myMsgVisit"></span> -->
         </div>
         <img
+            v-if="postData.pos_image !== '...'"
+            :src="postData.pos_image"
+            class="card-img-top"
+            alt="Imagen del post"
+        />
+        <img
+            v-else
             src="@/assets/background.jpg"
             class="card-img-top"
             alt="Imagen del post"
@@ -32,6 +42,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import getDayMonthYear from '@/helpers/getDayMonthYear'
 
 export default defineComponent({
     name: 'Post',
@@ -41,8 +52,18 @@ export default defineComponent({
             required: true,
         },
     },
-    setup() {
-        return {}
+    setup(props) {
+        const { day, month, dayWeek, yearDay, time } = getDayMonthYear(
+            props.postData.updatedAt
+        )
+
+        return {
+            day,
+            month,
+            dayWeek,
+            yearDay,
+            time,
+        }
     },
 })
 </script>
@@ -62,8 +83,8 @@ export default defineComponent({
 .cardHeader h3 {
     display: flex;
     align-items: center;
-    margin-left: 5px;
-    margin-top: 10px;
+    margin-left: 10px;
+    margin-top: -7px;
 }
 .card {
     width: 100% !important;
@@ -76,5 +97,12 @@ export default defineComponent({
     position: absolute;
     right: 10px;
     top: 5px;
+}
+.postDate {
+    color: gray;
+    position: absolute;
+    font-size: 15px;
+    left: 71px;
+    top: 38px;
 }
 </style>
