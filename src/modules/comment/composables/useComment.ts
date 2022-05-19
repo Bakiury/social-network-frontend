@@ -10,8 +10,15 @@ const useComment = () => {
         return resp;
     }
 
+    const createComment = async (comment: any) => {
+        const resp = await store.dispatch('comment/createComment', comment);
+
+        return resp;
+    }
+
     return {
         allComment,
+        createComment,
 
         getAllComment: computed(() => store.getters['comment/getComments']),
     }
