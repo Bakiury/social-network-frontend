@@ -16,9 +16,14 @@ const usePost = () => {
         return resp;
     }
 
+    const postsByName = (userName: string) => {
+        store.commit('post/postsByName', userName);
+    }
+
     return {
         allPost,
         createPost,
+        postsByName,
 
         getAllPost: computed(() => store.getters['post/getPosts']),
     }

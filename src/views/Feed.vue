@@ -3,7 +3,7 @@
     <section id="myFeed">
         <h2>
             <span>
-                <u>Bienvenid@</u>
+                <u>Welcome</u>
                 <p>
                     {{ getCurrentUser.use_name }}
                     {{ getCurrentUser.use_lastname }}
@@ -11,7 +11,7 @@
             </span>
         </h2>
 
-        <!-- <Searcher @forChild="postsFiltered" /> -->
+        <Searcher />
 
         <div class="addPostBox">
             <i
@@ -134,6 +134,7 @@ import useAuth from '@/modules/auth/composables/useAuth'
 import usePost from '@/modules/post/composables/usePost'
 import Navbar from '@/components/Navbar.vue'
 import Post from '@/components/Post.vue'
+import Searcher from '@/components/Searcher.vue'
 import uploadImage from '@/helpers/uploadImage'
 
 export default defineComponent({
@@ -141,6 +142,7 @@ export default defineComponent({
     components: {
         Navbar,
         Post,
+        Searcher,
     },
     setup() {
         const localImage = ref()
@@ -221,6 +223,7 @@ export default defineComponent({
 }
 #myFeed p {
     margin-top: 10px;
+    font-family: 'Baloo Bhai 2', cursive;
 }
 #myFeed h2 {
     color: #ffffff;
