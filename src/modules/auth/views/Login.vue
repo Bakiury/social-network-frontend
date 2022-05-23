@@ -44,6 +44,9 @@
                     >
                 </div>
             </div>
+            <small class="copy-right">
+                Todos los derechos reservados | © 2022 Bakiury
+            </small>
         </div>
     </div>
 </template>
@@ -101,6 +104,7 @@ export default defineComponent({
     width: 385px;
     box-shadow: 0px 0px 2px 3px #ffffff;
     border-radius: 20px;
+    margin-bottom: 20px;
 }
 .user-img {
     margin-top: -50px;
@@ -159,5 +163,8 @@ button:hover {
 }
 .forgot a:hover {
     color: #444444;
+}
+.copy-right {
+    color: #cccccc;
 }
 </style>

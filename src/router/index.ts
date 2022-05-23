@@ -21,6 +21,12 @@ const routes: Array<RouteRecordRaw> = [
     name: 'feed',
     beforeEnter: [isAuthenticatedGuard],
     component: () => import(/* webpackChunkName: "feed" */ '@/views/Feed.vue')
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    beforeEnter: [isAuthenticatedGuard],
+    component: () => import(/* webpackChunkName: "profile" */ '@/modules/auth/views/Profile.vue')
   }
 ]
 

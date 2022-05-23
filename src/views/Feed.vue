@@ -23,9 +23,20 @@
         </div>
 
         <section class="myContent">
-            <div v-for="post in getAllPost" :key="post.pos_id">
-                <Post :postData="post" />
-            </div>
+            <template v-if="getAllPost.length > 0">
+                <div v-for="post in getAllPost" :key="post.pos_id">
+                    <Post :postData="post" />
+                </div>
+            </template>
+            <template v-else>
+                <div class="no-posts">
+                    <h1>Oops...</h1>
+                    <h3>No hay publicaciones</h3>
+                </div>
+            </template>
+            <small class="copy-right">
+                Todos los derechos reservados | © 2022 Bakiury
+            </small>
         </section>
 
         <!-- Modal Create -->
@@ -291,5 +302,18 @@ img {
 }
 .imgBox {
     margin-bottom: 170px;
+}
+.no-posts {
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.copy-right {
+    position: relative;
+    text-align: center;
+    color: #cccccc;
+    font-size: 15px;
+    overflow: hidden;
 }
 </style>

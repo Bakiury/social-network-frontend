@@ -10,6 +10,12 @@ const useAuth = () => {
         return resp;
     }
 
+    const updateUser = async (user: any) => {
+        const resp = await store.dispatch('auth/updateUser', user);
+
+        return resp;
+    }
+
     const loginUser = async (user: any) => {
         const resp = await store.dispatch('auth/signInUser', user);
 
@@ -36,6 +42,7 @@ const useAuth = () => {
         authUser,
         refreshToken,
         createUser,
+        updateUser,
         loginUser,
         logOut,
 

@@ -14,12 +14,49 @@ const actions: ActionTree<AuthStateInterface, StateInterface> = {
                 use_email,
                 use_password,
                 use_image,
-                use_birthday: use_birthday + ':00+00:00',
+                use_birthday,
                 use_description
             })
             const { access_token, refresh_token } = data
 
             commit('loginUser', { access_token, refresh_token })
+
+            return { ok: true }
+        } catch (error) {
+            return { ok: false, message: error }
+        }
+    },
+
+    async updateUser({ commit }, user) {
+        const { use_id, use_name, use_lastname, use_email, use_image, use_birthday, use_description } = user
+
+        const access_token = localStorage.getItem('access_token')
+        const refresh_token = localStorage.getItem('refresh_token')
+
+        if (!access_token || !refresh_token) {
+            commit('logOut')
+
+            return { ok: false, message: 'No hay token' }
+        }
+
+        try {
+            await authApi.patch(`/user/${ use_id }`, {
+                use_name,
+                use_lastname,
+                use_email,
+                use_image,
+                use_birthday,
+                use_description
+            },
+                {
+                    headers: {
+                        Authorization: `Bearer ${ localStorage.getItem(
+                            'access_token'
+                        ) }`,
+                    },
+                })
+
+            commit('updateUser', { ...user })
 
             return { ok: true }
         } catch (error) {
@@ -92,9 +129,9 @@ const actions: ActionTree<AuthStateInterface, StateInterface> = {
                     ) }`,
                 },
             })
-            const { use_id, use_name, use_lastname, use_image } = data
+            const { use_id, use_name, use_lastname, use_email, use_image, use_birthday, use_description } = data
 
-            commit('authUser', { use_id, use_name, use_lastname, use_image })
+            commit('authUser', { use_id, use_name, use_lastname, use_email, use_image, use_birthday, use_description })
 
             return { ok: true }
         } catch (error) {

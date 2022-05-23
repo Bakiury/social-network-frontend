@@ -7,19 +7,19 @@
                     :src="localImage"
                     alt="Foto del usuario"
                 />
-                <img v-else src="@/assets/user.png" alt="logo" />
+                <img v-else src="@/assets/user.png" alt="Foto del usuario" />
             </div>
 
-            <div class="mb-5">
+            <div>
                 <div class="container align-self-center p-6">
                     <h1 class="font-weight-bold mb-3 text-center">
-                        Crea tu cuenta
+                        Editar perfil
                     </h1>
                     <p class="text-muted mb-2 text-center">
-                        Ingresa la siguiente información para registrarte.
+                        Modifica los datos que sean necesarios.
                     </p>
 
-                    <form @submit.prevent="onSubmit" autocomplete="off">
+                    <form @submit.prevent="onSubmit">
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group mb-3">
@@ -31,7 +31,7 @@
                                         type="text"
                                         class="form-control"
                                         placeholder="Ingrese su nombre"
-                                        v-model="userForm.use_name"
+                                        v-model="getCurrentUser.use_name"
                                     />
                                 </div>
 
@@ -44,7 +44,7 @@
                                         type="text"
                                         class="form-control"
                                         placeholder="Ingrese su apellido"
-                                        v-model="userForm.use_lastname"
+                                        v-model="getCurrentUser.use_lastname"
                                     />
                                 </div>
 
@@ -57,21 +57,24 @@
                                         type="email"
                                         class="form-control"
                                         placeholder="Ingrese su email"
-                                        v-model="userForm.use_email"
+                                        v-model="getCurrentUser.use_email"
                                     />
                                 </div>
 
                                 <div class="form-group mb-3">
                                     <label class="font-weight-bold">
-                                        Contraseña
-                                        <span class="text-danger">*</span>
+                                        Cambio de contraseña
                                     </label>
-                                    <input
-                                        type="password"
-                                        class="form-control"
-                                        placeholder="Ingrese su contraseña"
-                                        v-model="userForm.use_password"
-                                    />
+                                    <button
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal"
+                                        class="btn btn-primary w-100"
+                                        title="Cambiar tu contraseña"
+                                        type="button"
+                                    >
+                                        Cambiar contraseña&nbsp;
+                                        <i class="fa-solid fa-key"></i>
+                                    </button>
                                 </div>
                             </div>
 
@@ -108,46 +111,29 @@
                                         type="date"
                                         class="form-control"
                                         placeholder="Ingrese su fecha de nacimiento"
-                                        v-model="userForm.use_birthday"
+                                        v-model="getCurrentUser.use_birthday"
                                     />
                                 </div>
 
                                 <div class="form-group mb-3">
                                     <label class="font-weight-bold">
                                         Descripción
+                                        <span class="text-danger">*</span>
                                     </label>
                                     <textarea
                                         cols="30"
                                         rows="4"
                                         class="form-control mt-2"
                                         placeholder="Ingrese su descripción"
-                                        v-model="userForm.use_description"
+                                        v-model="getCurrentUser.use_description"
                                     ></textarea>
                                 </div>
                             </div>
 
-                            <br />
-
-                            <div class="form-group mb-5">
-                                <div
-                                    class="form-check d-flex justify-content-center"
-                                >
-                                    <input
-                                        class="form-check-input mx-2"
-                                        type="checkbox"
-                                    />
-                                    <label class="form-check-label text-muted">
-                                        Al seleccionar esta casilla aceptas
-                                        nuestro aviso de privacidad y los
-                                        términos y condiciones
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="d-flex">
+                            <div class="d-flex mt-4">
                                 <button type="button" class="btn btn-dark">
                                     <router-link
-                                        :to="{ name: 'login' }"
+                                        to="/feed"
                                         class="nav-link text-white"
                                     >
                                         Volver&nbsp;
@@ -155,32 +141,84 @@
                                     </router-link>
                                 </button>
                                 <button class="btn btn-success" type="submit">
-                                    Registrarse&nbsp;
+                                    Guardar&nbsp;
                                     <i class="fa-solid fa-floppy-disk"></i>
                                 </button>
                             </div>
+                            <small class="copy-right text-muted">
+                                Todos los derechos reservados | © 2022 Bakiury
+                            </small>
                         </div>
                     </form>
                 </div>
             </div>
-            <small class="copy-right text-muted">
-                Todos los derechos reservados | © 2022 Bakiury
-            </small>
         </div>
+
+        <!-- Modal Change Password -->
+        <div
+            class="modal fade"
+            id="exampleModal"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header w-100">
+                        <h5 class="modal-title" id="exampleModalLabel">
+                            <b>Cambio de contraseña</b>
+                        </h5>
+                        <a
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                        ></a>
+                    </div>
+                    <div class="modal-body">
+                        <div class="w-100">
+                            <div class="d-flex">
+                                <b class="text-center"
+                                    >Nueva Contraseña&nbsp;</b
+                                >
+                                <input
+                                    type="password"
+                                    class="form-control"
+                                    placeholder="Ingrese la nueva contraseña"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-end">
+                        <a
+                            type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                        >
+                            Cerrar
+                        </a>
+                        &nbsp;
+                        <a class="btn btn-success">Cambiar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Fin Modal Change Password -->
     </section>
 </template>
+
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import Swal from 'sweetalert2'
 import useAuth from '../composables/useAuth'
 import uploadImage from '@/helpers/uploadImage'
 
 export default defineComponent({
-    name: 'Register',
+    name: 'Profile',
     setup() {
         const router = useRouter()
-        const { createUser } = useAuth()
+        const { authUser, getCurrentUser, updateUser } = useAuth()
         const localImage = ref()
         const file = ref()
         const imageSelector = ref()
@@ -202,18 +240,14 @@ export default defineComponent({
             imageSelector.value.click()
         }
 
-        const userForm = ref({
-            use_name: '',
-            use_lastname: '',
-            use_email: '',
-            use_password: '',
-            use_image: '',
-            use_birthday: '',
-            use_description: '',
+        onMounted(async () => {
+            await authUser() // Fill state with the user info
+
+            localImage.value = getCurrentUser.value.use_image
         })
 
         return {
-            userForm,
+            getCurrentUser,
             localImage,
             file,
             imageSelector,
@@ -221,19 +255,31 @@ export default defineComponent({
             onSelectImage,
 
             onSubmit: async () => {
-                userForm.value.use_image = await uploadImage(file.value) // To upload the image in cloudinary
-                if (!userForm.value.use_image) userForm.value.use_image = '...'
+                if (file.value) {
+                    getCurrentUser.value.use_image = await uploadImage(
+                        file.value
+                    ) // To upload the image in cloudinary
+                }
 
-                const { ok, message } = await createUser(userForm.value)
+                const { ok, message } = await updateUser(getCurrentUser.value)
                 if (message) console.log(message.response.data)
 
-                if (!ok) Swal.fire('Oops', 'Faltan datos', 'error')
-                else router.push({ name: 'feed' })
+                if (!ok) {
+                    Swal.fire('Oops', 'Faltan datos', 'error')
+                } else {
+                    Swal.fire(
+                        '¡Hecho!',
+                        'Usuario actualizado exitósamente',
+                        'success'
+                    )
+                    router.push({ name: 'profile' })
+                }
             },
         }
     },
 })
 </script>
+
 <style scoped>
 .contact-box {
     position: absolute;
@@ -241,15 +287,12 @@ export default defineComponent({
     background-size: cover;
     width: 100%;
     min-height: 100vh;
+    color: #333333;
 }
 .myRegister {
     padding: 50px;
     min-height: 100vh;
-    padding-bottom: 100px;
-    background-color: rgba(255, 234, 167, 0.8) !important;
-}
-.text-muted {
-    color: #555555 !important;
+    background-color: rgba(255, 255, 255, 0.5) !important;
 }
 .myBox {
     width: 200px;
@@ -266,20 +309,37 @@ button {
     margin: 0 auto;
     width: 400px;
 }
-small {
-    position: relative;
-    transform: translate(-50%);
-    left: 50%;
+.changePass:hover {
+    color: #ffffff;
+    background: #444444;
 }
-.font-weight-bold {
-    font-weight: bold;
+.modal-content {
+    width: 99%;
+}
+.modal-header,
+.modal-footer {
+    background: rgba(255, 234, 167, 1) !important;
+}
+.modal-body {
+    background: #444444 !important;
+    color: #ffffff;
+}
+.btn-dark {
+    background-color: #333333;
+}
+.btn-dark:hover {
+    background-color: #000000;
+    transition: all ease 0.3s;
 }
 textarea {
     resize: none;
 }
 .copy-right {
     position: relative;
-    margin-left: -150px;
+    transform: translate(-50%);
+    margin-top: 50px;
+    text-align: center;
+    left: 50%;
     font-size: 15px;
 }
 </style>

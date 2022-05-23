@@ -16,12 +16,15 @@ const mutation: MutationTree<AuthStateInterface> = {
         state.status = 'authenticated'
     },
 
-    authUser(state: AuthStateInterface, { use_id, use_name, use_lastname, use_image }) {
+    authUser(state: AuthStateInterface, { use_id, use_name, use_lastname, use_email, use_image, use_birthday, use_description }) {
         state.user = {
             use_id,
             use_name,
             use_lastname,
-            use_image
+            use_email,
+            use_image,
+            use_birthday,
+            use_description
         }
     },
 
@@ -33,6 +36,11 @@ const mutation: MutationTree<AuthStateInterface> = {
 
         localStorage.removeItem('access_token')
         localStorage.removeItem('refresh_token')
+    },
+
+    updateUser(state: AuthStateInterface, user) {
+        const index = Object.entries(state.user).map((u: any) => u.use_id).indexOf(user.use_id)
+        Object.entries(state.user)[index] = user
     }
 }
 
