@@ -185,6 +185,7 @@
                                     type="password"
                                     class="form-control"
                                     placeholder="Ingrese la nueva contraseña"
+                                    v-model="myPass"
                                 />
                             </div>
                         </div>
@@ -194,11 +195,14 @@
                             type="button"
                             class="btn btn-secondary"
                             data-bs-dismiss="modal"
+                            ref="modalCloseBtn"
                         >
                             Cerrar
                         </a>
                         &nbsp;
-                        <a class="btn btn-success">Cambiar</a>
+                        <a class="btn btn-success" @click="changePassword"
+                            >Cambiar</a
+                        >
                     </div>
                 </div>
             </div>
@@ -209,7 +213,6 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
 import Swal from 'sweetalert2'
 import useAuth from '../composables/useAuth'
 import uploadImage from '@/helpers/uploadImage'
@@ -217,11 +220,12 @@ import uploadImage from '@/helpers/uploadImage'
 export default defineComponent({
     name: 'Profile',
     setup() {
-        const router = useRouter()
         const { authUser, getCurrentUser, updateUser } = useAuth()
         const localImage = ref()
         const file = ref()
         const imageSelector = ref()
+        const myPass = ref()
+        const modalCloseBtn = ref() // Close modal when updated
 
         const onSelectedImage = (event: any) => {
             file.value = event.target.files[0]
@@ -253,6 +257,8 @@ export default defineComponent({
             imageSelector,
             onSelectedImage,
             onSelectImage,
+            myPass,
+            modalCloseBtn, // Close modal when updated
 
             onSubmit: async () => {
                 if (file.value) {
@@ -272,7 +278,26 @@ export default defineComponent({
                         'Usuario actualizado exitósamente',
                         'success'
                     )
-                    router.push({ name: 'profile' })
+                }
+            },
+
+            changePassword: async () => {
+                if (!myPass.value) return
+
+                const { ok, message } = await updateUser({
+                    use_id: getCurrentUser.value.use_id,
+                    use_password: myPass.value,
+                })
+                if (message) console.log(message.response.data)
+
+                if (ok) {
+                    Swal.fire(
+                        '¡Hecho!',
+                        'La contraseña se ha cambiado',
+                        'success'
+                    )
+                    modalCloseBtn.value.click() // Close modal when updated
+                    myPass.value = ''
                 }
             },
         }

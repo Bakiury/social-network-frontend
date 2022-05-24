@@ -28,8 +28,6 @@ const actions: ActionTree<AuthStateInterface, StateInterface> = {
     },
 
     async updateUser({ commit }, user) {
-        const { use_id, use_name, use_lastname, use_email, use_image, use_birthday, use_description } = user
-
         const access_token = localStorage.getItem('access_token')
         const refresh_token = localStorage.getItem('refresh_token')
 
@@ -40,21 +38,13 @@ const actions: ActionTree<AuthStateInterface, StateInterface> = {
         }
 
         try {
-            await authApi.patch(`/user/${ use_id }`, {
-                use_name,
-                use_lastname,
-                use_email,
-                use_image,
-                use_birthday,
-                use_description
-            },
-                {
-                    headers: {
-                        Authorization: `Bearer ${ localStorage.getItem(
-                            'access_token'
-                        ) }`,
-                    },
-                })
+            await authApi.patch(`/user/${ user.use_id }`, user, {
+                headers: {
+                    Authorization: `Bearer ${ localStorage.getItem(
+                        'access_token'
+                    ) }`,
+                },
+            })
 
             commit('updateUser', { ...user })
 
