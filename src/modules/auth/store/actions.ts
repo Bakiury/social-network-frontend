@@ -54,6 +54,31 @@ const actions: ActionTree<AuthStateInterface, StateInterface> = {
         }
     },
 
+    async getPostsByUserId({ commit }, userId) {
+        const access_token = localStorage.getItem('access_token')
+        const refresh_token = localStorage.getItem('refresh_token')
+
+        if (!access_token || !refresh_token) {
+            commit('logOut')
+
+            return { ok: false, message: 'No hay token' }
+        }
+
+        try {
+            const { data } = await authApi.get(`/user/${ userId }`, {
+                headers: {
+                    Authorization: `Bearer ${ localStorage.getItem(
+                        'access_token'
+                    ) }`,
+                },
+            })
+
+            return { ok: true, data }
+        } catch (error) {
+            return { ok: false, message: error }
+        }
+    },
+
     async signInUser({ commit }, user) {
         const { use_email, use_password } = user
 

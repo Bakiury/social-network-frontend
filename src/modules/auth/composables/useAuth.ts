@@ -16,6 +16,12 @@ const useAuth = () => {
         return resp;
     }
 
+    const getPostsByUserId = async (userId: number) => {
+        const resp = await store.dispatch('auth/getPostsByUserId', userId);
+
+        return resp;
+    }
+
     const loginUser = async (user: any) => {
         const resp = await store.dispatch('auth/signInUser', user);
 
@@ -43,6 +49,7 @@ const useAuth = () => {
         refreshToken,
         createUser,
         updateUser,
+        getPostsByUserId,
         loginUser,
         logOut,
 
