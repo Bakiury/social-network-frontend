@@ -1,6 +1,10 @@
 <template>
     <div v-if="postData.user" class="card">
-        <div class="cardHeader" title="Ver perfil de este usuario">
+        <div
+            class="cardHeader"
+            title="Ir al perfil de este usuario"
+            @click="goToUserProfile"
+        >
             <img
                 v-if="postData.user.use_image !== '...'"
                 :src="postData.user.use_image"
@@ -8,7 +12,8 @@
             />
             <img v-else src="@/assets/user.png" alt="Imagen del usuario" />
             <h3>
-                {{ postData.user.use_name }} {{ postData.user.use_lastname }}
+                {{ postData.user.use_name }}
+                {{ postData.user.use_lastname }}
             </h3>
             <span class="postDate"
                 >{{ day }} de {{ month }} a las {{ time }}</span
@@ -113,6 +118,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import Swal from 'sweetalert2'
 import useAuth from '@/modules/auth/composables/useAuth'
 import useComment from '@/modules/comment/composables/useComment'
@@ -128,6 +134,8 @@ export default defineComponent({
         },
     },
     setup(props) {
+        const router = useRouter()
+
         const { day, month, dayWeek, yearDay, time } = getDayMonthYear(
             props.postData.updatedAt
         )
@@ -150,6 +158,13 @@ export default defineComponent({
             time,
             commentForm,
             getDayMonthYear,
+
+            goToUserProfile: () => {
+                router.push({
+                    name: 'profile-id',
+                    params: { id: props.postData.pos_use_id },
+                })
+            },
 
             createCommentBtn: async () => {
                 commentForm.value.com_use_id = getCurrentUser.value.use_id

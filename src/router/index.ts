@@ -7,6 +7,11 @@ const routes: Array<RouteRecordRaw> = [
     redirect: '/login'
   },
   {
+    path: '/:pathMatch(.*)*',
+    name: 'page-not-found',
+    component: () => import(/* webpackChunkName: "page-not-found" */ '@/views/PageNotFound.vue')
+  },
+  {
     path: '/login',
     name: 'login',
     component: () => import(/* webpackChunkName: "login" */ '@/modules/auth/views/Login.vue')
@@ -27,6 +32,12 @@ const routes: Array<RouteRecordRaw> = [
     name: 'profile',
     beforeEnter: [isAuthenticatedGuard],
     component: () => import(/* webpackChunkName: "profile" */ '@/modules/auth/views/Profile.vue')
+  },
+  {
+    path: '/profile/:id',
+    name: 'profile-id',
+    beforeEnter: [isAuthenticatedGuard],
+    component: () => import(/* webpackChunkName: "profile-id" */ '@/modules/auth/views/ProfileId.vue')
   }
 ]
 
